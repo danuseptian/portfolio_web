@@ -1,175 +1,92 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:get/get.dart';
+import 'package:portfolio_web/data/dashboard_data.dart';
+import 'package:portfolio_web/module/dashboard/controller/dashboard_controller.dart';
+import 'package:portfolio_web/module/home/view/home_view.dart';
 
-import '../../../utility/theme/constant.dart';
+import '../../about/view/about_view.dart';
+import '../../contact/view/contact_view.dart';
+import '../../project/view/project_view.dart';
 
 class DashboardView extends StatelessWidget {
   const DashboardView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    DashboardController controller = Get.put(DashboardController());
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            // opacity: 0.5,
-            image: AssetImage(
-              "asset/image/background.jpg",
+      body: GetBuilder<DashboardController>(builder: (context) {
+        return Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                "asset/image/background.jpg",
+              ),
+              fit: BoxFit.cover,
             ),
-            fit: BoxFit.cover,
           ),
-        ),
-        child: Stack(
-          children: [
-            Container(
-              margin: const EdgeInsets.all(50),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(defaultRadiusCircular),
-                color: Colors.grey[900],
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    const Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(width: 70),
-                        Text(
-                          'Home',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 18,
+          child: Stack(
+            children: [
+              if (controller.indexDashboard == 0) const HomeView(),
+              if (controller.indexDashboard == 1) const ProjectView(),
+              if (controller.indexDashboard == 2) const AboutView(),
+              if (controller.indexDashboard == 3) const ContactView(),
+              Container(
+                  margin: const EdgeInsets.only(
+                    left: 20.0,
+                  ),
+                  padding: const EdgeInsets.all(15),
+                  decoration: const BoxDecoration(),
+                  child: const FlutterLogo(
+                    size: 100,
+                    style: FlutterLogoStyle.markOnly,
+                  )),
+              Container(
+                margin: const EdgeInsets.only(left: 150, top: 15),
+                child: Row(
+                  children: List.generate(
+                    DashboardData.dashboardList.length,
+                    (int index) {
+                      var item = DashboardData.dashboardList[index];
+                      return GestureDetector(
+                        onTap: () async {
+                          controller.onChangedIndexDashboard(index);
+                        },
+                        child: Container(
+                          width: 70,
+                          margin: const EdgeInsets.only(
+                            right: 30.0,
+                          ),
+                          padding: const EdgeInsets.only(bottom: 3),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: controller.indexDashboard == index
+                                    ? Colors.amber
+                                    : Colors.transparent,
+                                width: 4,
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            item,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
-                        SizedBox(width: 30),
-                        Text(
-                          'Project',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                        SizedBox(width: 30),
-                        Text(
-                          'About',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                        SizedBox(width: 30),
-                        Text(
-                          'Contact',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: LottieBuilder.asset(
-                            'asset/lottie/developer.json',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(width: 50),
-                        Expanded(
-                          flex: 3,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Welcome to my portfolio!',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 30.0,
-                              ),
-                              const Text(
-                                'Hello, my name is Danu Septian',
-                                style: TextStyle(
-                                  fontSize: 30,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 30.0,
-                              ),
-                              const Text(
-                                'I design and develop Android app, iOS app,\nand Web with Flutter.',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 30.0,
-                              ),
-                              const Text(
-                                'Explore my works that fuse heart and technology:',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10.0, vertical: 8),
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: Colors.blue[800],
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: const Text(
-                                        'Explore',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                  ],
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-            Container(
-                margin: const EdgeInsets.only(
-                  left: 20.0,
-                ),
-                padding: const EdgeInsets.all(15),
-                decoration: const BoxDecoration(),
-                child: const FlutterLogo(
-                  size: 100,
-                  style: FlutterLogoStyle.markOnly,
-                )),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

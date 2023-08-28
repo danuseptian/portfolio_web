@@ -15,4 +15,10 @@ class DashboardController extends GetxController {
 
   @override
   void onClose() {}
+
+  int indexDashboard = 0;
+  onChangedIndexDashboard(value) {
+    indexDashboard = value;
+    update();
+  }
 }
